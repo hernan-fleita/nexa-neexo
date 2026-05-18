@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NexaAvatar from "./NexaAvatar.jsx";
-import { NexaWordmark } from "./NexaBrand.jsx";
+import { NexaWordmark, NexaIsotipo } from "./NexaBrand.jsx";
 
 const LANDING_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -288,6 +288,7 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const [hoverBtn, setHoverBtn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [legalModal, setLegalModal] = useState(null); // "privacidad" | "terminos" | "contacto" | null
 
   return (
     <div style={S.page}>
@@ -501,6 +502,9 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* LEGAL MODALS */}
+      {legalModal && <NexaLegalModal type={legalModal} onClose={() => setLegalModal(null)} />}
+
       {/* FOOTER */}
       <footer style={S.footer} className="lp-footer">
         <a href="/" style={{ textDecoration: "none" }}>
@@ -510,15 +514,260 @@ export default function LandingPage() {
           © 2026 Neexo Solutions. Todos los derechos reservados.
         </p>
         <div style={S.footerLinks} className="lp-footer-links">
-          {["Privacidad", "Términos", "Contacto"].map(l => (
-            <a key={l} href="#" style={S.footerLink}
+          {[["Privacidad", "privacidad"], ["Términos", "terminos"], ["Contacto", "contacto"]].map(([label, key]) => (
+            <button key={key}
+              onClick={() => setLegalModal(key)}
+              style={{ ...S.footerLink, background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit" }}
               onMouseEnter={e => e.target.style.color = "#94a3b8"}
               onMouseLeave={e => e.target.style.color = "#64748b"}
-            >{l}</a>
+            >{label}</button>
           ))}
         </div>
       </footer>
     </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+   NEXA Legal Modal — NEXA habla en primera persona
+────────────────────────────────────────────────────────────── */
+const LEGAL_CONTENT = {
+  privacidad: {
+    title: "Política de privacidad",
+    messages: [
+      {
+        text: "Hola. Soy NEXA, y quiero ser completamente transparente sobre cómo manejamos tu información. Acá te lo explico sin vueltas ni letra chica.",
+      },
+      {
+        label: "Qué datos recopilamos",
+        text: "Cuando usás NEXA recopilamos lo que vos mismo nos das: nombre, email, nombre de tu empresa y los datos que ingresás a tu workspace. También registramos métricas de uso agregadas para mejorar la experiencia — nunca contenido de tus conversaciones.",
+      },
+      {
+        label: "Cómo los usamos",
+        text: "Tu información se usa exclusivamente para darte el servicio. No vendemos ni compartimos tus datos con terceros. Nunca. Los datos de tu negocio son tuyos y solo tuyos.",
+      },
+      {
+        label: "Seguridad",
+        text: "Toda la información viaja encriptada (TLS 1.3) y se almacena con cifrado en reposo (AES-256). El acceso está restringido al equipo técnico de Neexo Solutions bajo protocolos estrictos de autenticación.",
+      },
+      {
+        label: "Tus derechos",
+        text: "Podés solicitar en cualquier momento: acceso a tus datos, corrección, exportación completa o eliminación definitiva. Solo escribinos a privacy@neexo.com y lo resolvemos en 72 horas.",
+      },
+      {
+        label: "Cookies",
+        text: "Usamos únicamente cookies esenciales para mantener tu sesión activa. Sin rastreadores, sin publicidad, sin cookies de terceros.",
+      },
+      {
+        text: "Esta política puede actualizarse. Si hay cambios relevantes, te aviso por email con al menos 30 días de anticipación. Cualquier duda, escribime directamente.",
+      },
+    ],
+  },
+  terminos: {
+    title: "Términos de uso",
+    messages: [
+      {
+        text: "Antes de arrancar, quiero que quede claro cómo funciona esto. Son las reglas del juego — las mías y las tuyas.",
+      },
+      {
+        label: "Qué es NEXA",
+        text: "Soy una plataforma de inteligencia artificial para negocios, desarrollada por Neexo Solutions. Mi rol es ayudarte a centralizar información, analizar métricas y tomar mejores decisiones. Soy una herramienta de apoyo — las decisiones finales siempre son tuyas.",
+      },
+      {
+        label: "Uso aceptable",
+        text: "Podés usarme para gestionar tu negocio, analizar datos y consultar estrategia. No está permitido: actividades ilegales, compartir credenciales de acceso, intentar acceder a datos de otros workspaces, ni usar la plataforma para generar contenido dañino.",
+      },
+      {
+        label: "Tus datos",
+        text: "Todo lo que ingresás a tu workspace te pertenece. Podés exportarlo o eliminarlo en cualquier momento. Neexo Solutions no reclama propiedad sobre el contenido de tu negocio.",
+      },
+      {
+        label: "Propiedad intelectual",
+        text: "La marca NEXA, el diseño, el código y los modelos de IA son propiedad de Neexo Solutions. No podés reproducir ni redistribuir la plataforma sin autorización.",
+      },
+      {
+        label: "Disponibilidad",
+        text: "Nos comprometemos a mantener el servicio disponible 24/7 con un uptime objetivo del 99.5%. Si hay mantenimiento planificado, te aviso con al menos 24 horas de anticipación.",
+      },
+      {
+        label: "Cancelación",
+        text: "Podés cancelar tu cuenta en cualquier momento desde la configuración de tu workspace, sin cargos adicionales. Tus datos se eliminan de forma permanente a los 30 días de la cancelación.",
+      },
+      {
+        text: "Cualquier consulta sobre estos términos, escribime a hola@neexo.com. Estoy para ayudarte.",
+      },
+    ],
+  },
+  contacto: null,
+};
+
+const TITLES = { privacidad: "Privacidad", terminos: "Términos", contacto: "Contacto" };
+
+function NexaMessage({ msg }) {
+  return (
+    <div style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 16 }}>
+      <NexaIsotipo size={32} animate={false} style={{ flexShrink: 0, marginTop: 2 }} />
+      <div style={{
+        background: "rgba(14,165,233,0.05)", border: "1px solid rgba(14,165,233,0.15)",
+        borderRadius: "4px 14px 14px 14px", padding: "12px 16px", flex: 1,
+      }}>
+        {msg.label && (
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#0ea5e9", letterSpacing: "0.07em", marginBottom: 6, textTransform: "uppercase" }}>
+            {msg.label}
+          </div>
+        )}
+        <p style={{ fontSize: 13, color: "#cbd5e1", lineHeight: 1.7, margin: 0 }}>{msg.text}</p>
+      </div>
+    </div>
+  );
+}
+
+function ContactForm({ onClose }) {
+  const [form, setForm] = useState({ nombre: "", email: "", asunto: "", mensaje: "" });
+  const [sent, setSent] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  function validate() {
+    const e = {};
+    if (!form.nombre.trim()) e.nombre = true;
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = true;
+    if (!form.mensaje.trim()) e.mensaje = true;
+    return e;
+  }
+
+  function submit(ev) {
+    ev.preventDefault();
+    const e = validate();
+    if (Object.keys(e).length) { setErrors(e); return; }
+    setSent(true);
+  }
+
+  const inputStyle = (field) => ({
+    width: "100%", background: "rgba(15,23,42,0.8)",
+    border: `1px solid ${errors[field] ? "rgba(239,68,68,0.5)" : "rgba(14,165,233,0.2)"}`,
+    borderRadius: 8, padding: "10px 14px", fontSize: 13,
+    color: "#e2e8f0", outline: "none", fontFamily: "inherit",
+    boxSizing: "border-box",
+  });
+
+  if (sent) {
+    return (
+      <div style={{ padding: "8px 0" }}>
+        <NexaMessage msg={{ text: `Recibí tu mensaje, ${form.nombre.split(" ")[0]}. Te respondo a ${form.email} dentro de las próximas 24 horas. ¡Gracias por escribirme!` }} />
+        <button onClick={onClose} style={{
+          marginTop: 8, width: "100%",
+          background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+          border: "none", borderRadius: 8, padding: "11px 0",
+          color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer",
+        }}>Cerrar</button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <NexaMessage msg={{ text: "Hola. Si tenés alguna consulta, problema o simplemente querés hablar sobre cómo NEXA puede ayudar a tu empresa — escribime acá y te respondo en menos de 24 horas." }} />
+      <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 8 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div>
+            <label style={{ fontSize: 11, color: "#64748b", fontWeight: 600, display: "block", marginBottom: 5 }}>Nombre *</label>
+            <input value={form.nombre} onChange={e => { setForm(f => ({ ...f, nombre: e.target.value })); setErrors(err => ({ ...err, nombre: false })); }}
+              style={inputStyle("nombre")} placeholder="Tu nombre" />
+          </div>
+          <div>
+            <label style={{ fontSize: 11, color: "#64748b", fontWeight: 600, display: "block", marginBottom: 5 }}>Email *</label>
+            <input type="email" value={form.email} onChange={e => { setForm(f => ({ ...f, email: e.target.value })); setErrors(err => ({ ...err, email: false })); }}
+              style={inputStyle("email")} placeholder="tu@empresa.com" />
+          </div>
+        </div>
+        <div>
+          <label style={{ fontSize: 11, color: "#64748b", fontWeight: 600, display: "block", marginBottom: 5 }}>Asunto</label>
+          <input value={form.asunto} onChange={e => setForm(f => ({ ...f, asunto: e.target.value }))}
+            style={inputStyle("asunto")} placeholder="¿En qué puedo ayudarte?" />
+        </div>
+        <div>
+          <label style={{ fontSize: 11, color: "#64748b", fontWeight: 600, display: "block", marginBottom: 5 }}>Mensaje *</label>
+          <textarea value={form.mensaje} onChange={e => { setForm(f => ({ ...f, mensaje: e.target.value })); setErrors(err => ({ ...err, mensaje: false })); }}
+            style={{ ...inputStyle("mensaje"), resize: "vertical", minHeight: 100, lineHeight: 1.6 }}
+            placeholder="Contame de tu proyecto o empresa…" rows={4} />
+        </div>
+        {Object.values(errors).some(Boolean) && (
+          <p style={{ fontSize: 12, color: "#ef4444", margin: 0 }}>Por favor completá los campos obligatorios.</p>
+        )}
+        <button type="submit" style={{
+          background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+          border: "none", borderRadius: 8, padding: "12px 0",
+          color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer",
+          marginTop: 4,
+        }}>Enviar mensaje →</button>
+        <p style={{ fontSize: 11, color: "#475569", textAlign: "center", margin: 0 }}>
+          También podés escribirnos directo a <span style={{ color: "#0ea5e9" }}>hola@neexo.com</span>
+        </p>
+      </form>
+    </div>
+  );
+}
+
+function NexaLegalModal({ type, onClose }) {
+  const content = LEGAL_CONTENT[type];
+
+  useEffect(() => {
+    const h = e => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [onClose]);
+
+  return (
+    <>
+      {/* Overlay */}
+      <div onClick={onClose} style={{
+        position: "fixed", inset: 0, zIndex: 300,
+        background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)",
+      }} />
+      {/* Panel */}
+      <div style={{
+        position: "fixed", top: "50%", left: "50%", zIndex: 301,
+        transform: "translate(-50%, -50%)",
+        width: "min(640px, calc(100vw - 32px))",
+        maxHeight: "min(700px, calc(100vh - 48px))",
+        background: "#080f1e",
+        border: "1px solid rgba(14,165,233,0.2)",
+        borderRadius: 20,
+        display: "flex", flexDirection: "column",
+        overflow: "hidden",
+        boxShadow: "0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(14,165,233,0.08)",
+      }}>
+        {/* Header */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "18px 22px 16px",
+          borderBottom: "1px solid rgba(14,165,233,0.1)",
+          flexShrink: 0,
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <NexaIsotipo size={30} animate={true} />
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 800, color: "#0ea5e9", letterSpacing: "-0.3px" }}>NEXA</div>
+              <div style={{ fontSize: 10, color: "#475569", letterSpacing: "0.06em" }}>{TITLES[type].toUpperCase()}</div>
+            </div>
+          </div>
+          <button onClick={onClose} style={{
+            background: "rgba(148,163,184,0.08)", border: "1px solid rgba(148,163,184,0.12)",
+            borderRadius: 8, padding: "6px 12px", color: "#64748b",
+            cursor: "pointer", fontSize: 14, lineHeight: 1,
+          }}>✕</button>
+        </div>
+
+        {/* Scrollable content */}
+        <div style={{ overflowY: "auto", padding: "20px 22px 24px", flex: 1 }}>
+          {type === "contacto" ? (
+            <ContactForm onClose={onClose} />
+          ) : (
+            content.messages.map((msg, i) => <NexaMessage key={i} msg={msg} />)
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 
