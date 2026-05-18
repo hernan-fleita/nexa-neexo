@@ -1,0 +1,43 @@
+export const DEMO_DATA = {
+  tenant:  "Demo Corp S.A.",
+  plan:    "NEXA Pro",
+  revenue: {
+    monthly:  1248000,
+    currency: "ARS",
+    change:   +8.3,
+    invoices: { paid: 9, pending: 3, overdue: 1 },
+    alert:    "1 factura vencida",
+    overdueList: [{
+      id: "#0039", client: "Demo Corp S.A.", amount: 95000, currency: "ARS",
+      issued: "18/04/2025", due: "03/05/2025", daysOverdue: 15,
+      contact: "admin@democorp.com", description: "Servicios de desarrollo — Mayo 2025",
+    }],
+  },
+  ops: {
+    tasks:   { open: 8, inProgress: 3, done: 21 },
+    uptime:  99.7,
+    blockers: 1,
+    alert:   "1 bloqueante crítico",
+    blockerList: [{
+      id: "#87", title: "Auth timeout en producción", severity: "CRÍTICO",
+      created: "Ayer, 22:14", url: "https://github.com",
+    }],
+  },
+  marketing: {
+    visits: 2840, leads: 47, conversion: 1.65,
+    topChannel: "Orgánico", change: +12.1,
+    campaigns: { active: 2, scheduled: 1 },
+  },
+  team: {
+    members: 4, online: 3, tasksToday: 11,
+    velocity: 87, standupDone: true,
+  },
+  activity: [
+    { time: "09:14", type: "ops",       icon: "▲", text: "Deploy exitoso en producción — v2.3.1" },
+    { time: "08:52", type: "revenue",   icon: "≡", text: "Factura #0042 enviada — $180.000 ARS" },
+    { time: "08:30", type: "team",      icon: "●", text: "Stand-up completado — 3/4 miembros" },
+    { time: "07:45", type: "marketing", icon: "⌕", text: "Lead calificado desde formulario web" },
+    { time: "Ayer",  type: "alert",     icon: "⚠", text: "Factura #0039 vencida — $95.000 ARS" },
+    { time: "Ayer",  type: "ops",       icon: "⑂", text: "Issue crítico #87 creado: Auth timeout" },
+  ],
+};
