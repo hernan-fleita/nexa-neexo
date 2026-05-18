@@ -594,7 +594,7 @@ const LEGAL_CONTENT = {
         text: "Podés cancelar tu cuenta en cualquier momento desde la configuración de tu workspace, sin cargos adicionales. Tus datos se eliminan de forma permanente a los 30 días de la cancelación.",
       },
       {
-        text: "Cualquier consulta sobre estos términos, escribime a hola@neexo.com. Estoy para ayudarte.",
+        text: "Cualquier consulta sobre estos términos, escribime a hola@neexo.solutions. Estoy para ayudarte.",
       },
     ],
   },
@@ -701,7 +701,7 @@ function ContactForm({ onClose }) {
           marginTop: 4,
         }}>Enviar mensaje →</button>
         <p style={{ fontSize: 11, color: "#475569", textAlign: "center", margin: 0 }}>
-          También podés escribirnos directo a <span style={{ color: "#0ea5e9" }}>hola@neexo.com</span>
+          También podés escribirnos directo a <span style={{ color: "#0ea5e9" }}>hola@neexo.solutions</span>
         </p>
       </form>
     </div>
