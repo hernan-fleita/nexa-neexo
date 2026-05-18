@@ -266,20 +266,26 @@ const STEPS = [
 const PLANS = [
   {
     name: "Starter", price: "0", period: "/mes",
-    desc: "Para equipos chicos que arrancan con IA.",
-    features: ["1 workspace", "Dashboard básico", "NEXA AI (50 consultas/mes)", "Revenue + Ops"],
+    desc: "Para explorar NEXA sin compromiso.",
+    features: ["1 workspace", "Dashboard básico (Revenue + Ops)", "NEXA AI · 30 consultas/mes", "Acceso web"],
     featured: false,
   },
   {
-    name: "Pro", price: "29.900", period: "/mes ARS",
+    name: "Pro", price: "49", period: "/mes USD",
     desc: "El stack completo para equipos en crecimiento.",
-    features: ["5 workspaces", "Dashboard completo", "NEXA AI ilimitado", "Revenue + Ops + Marketing + Team", "Alertas + Reportes PDF", "Soporte prioritario"],
+    features: ["5 workspaces", "4 módulos completos", "NEXA AI ilimitado", "Alertas inteligentes", "Reportes PDF", "Soporte por email"],
     featured: true,
+  },
+  {
+    name: "Business", price: "89", period: "/mes USD",
+    desc: "Para equipos que necesitan integraciones y escala.",
+    features: ["15 workspaces", "Todo lo de Pro", "Integraciones (HubSpot, Slack, Jira)", "API access", "Soporte prioritario 24/7"],
+    featured: false,
   },
   {
     name: "Enterprise", price: "Custom", period: "",
     desc: "Para empresas con necesidades específicas y escala.",
-    features: ["Workspaces ilimitados", "SSO + RBAC", "Integraciones custom", "SLA garantizado", "Onboarding dedicado", "API access"],
+    features: ["Workspaces ilimitados", "SSO + RBAC", "Integraciones custom", "SLA garantizado", "Onboarding dedicado"],
     featured: false,
   },
 ];
@@ -473,11 +479,15 @@ export default function LandingPage() {
               </ul>
               <button
                 style={p.featured ? { ...S.btnPrimary, width: "100%", padding: "12px 0", fontSize: 15 } : { ...S.btnOutline, width: "100%", padding: "12px 0", fontSize: 15 }}
-                onClick={() => navigate(p.name === "Starter" ? "/dashboard" : "/nexa")}
+                onClick={() => {
+                  if (p.name === "Enterprise") setLegalModal("contacto");
+                  else if (p.name === "Starter") navigate("/dashboard");
+                  else navigate("/nexa");
+                }}
                 onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
                 onMouseLeave={e => e.currentTarget.style.opacity = "1"}
               >
-                {p.name === "Enterprise" ? "Hablemos" : "Empezar"}
+                {p.name === "Enterprise" ? "Hablemos →" : "Empezar gratis"}
               </button>
             </div>
           ))}
