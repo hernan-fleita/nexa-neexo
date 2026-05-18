@@ -1,4 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#050f1a"/>
-  <text x="16" y="22" text-anchor="middle" font-family="monospace" font-size="16" font-weight="bold" fill="#0ea5e9">N</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#2d8f8a"/>
+      <stop offset="42%"  stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="42%" cy="36%">
+      <stop offset="0%"   stop-color="#0d2040"/>
+      <stop offset="100%" stop-color="#060e1c"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Open ring -->
+  <circle cx="50" cy="50" r="44" fill="none"
+    stroke="url(#g)" stroke-width="4"
+    stroke-linecap="round" stroke-dasharray="234 42"
+    transform="rotate(-52 50 50)"/>
+
+  <!-- Node in gap -->
+  <circle cx="83" cy="21" r="3.5" fill="#0ea5e9"/>
+
+  <!-- Background -->
+  <circle cx="50" cy="50" r="37" fill="url(#bg)"/>
+
+  <!-- Upper eye (almond) -->
+  <path d="M 33 33 Q 50 22.6 67 33 Q 50 43.4 33 33 Z"
+    fill="rgba(14,165,233,0.07)" stroke="url(#g)" stroke-width="1.1"/>
+  <circle cx="50" cy="33" r="9.35" fill="url(#g)"/>
+  <circle cx="50" cy="33" r="4.62" fill="#050f1a"/>
+  <circle cx="53.08" cy="29.92" r="2.2" fill="#fff" opacity="0.9"/>
+
+  <!-- Axis -->
+  <line x1="50" y1="45" x2="50" y2="55"
+    stroke="rgba(14,165,233,0.2)" stroke-width="0.8" stroke-linecap="round"/>
+
+  <!-- Lower eye (almond) -->
+  <path d="M 33 67 Q 50 56.6 67 67 Q 50 77.4 33 67 Z"
+    fill="rgba(14,165,233,0.07)" stroke="url(#g)" stroke-width="1.1"/>
+  <circle cx="50" cy="67" r="9.35" fill="url(#g)"/>
+  <circle cx="50" cy="67" r="4.62" fill="#050f1a"/>
+  <circle cx="53.08" cy="63.92" r="2.2" fill="#fff" opacity="0.9"/>
 </svg>

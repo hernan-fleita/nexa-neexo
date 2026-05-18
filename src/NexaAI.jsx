@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import NexaAvatar from "./NexaAvatar.jsx";
+import { NexaIsotipo } from "./NexaBrand.jsx";
 
 const SYSTEM = `Sos NEXA, la IA de negocios de Neexo Solutions.
 Tu especialidad: ayudar a fundadores, CEOs y equipos a tomar mejores decisiones de negocio.
@@ -40,40 +41,9 @@ const G = `
   @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
   @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
-  @keyframes spin1 { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-  @keyframes spin2 { from{transform:rotate(0deg)} to{transform:rotate(-360deg)} }
   .msg-enter { animation: fadeUp .3s ease; }
-  .nexa-ring1 { transform-origin: 50% 50%; animation: spin1 12s linear infinite; transform-box: fill-box; }
-  .nexa-ring2 { transform-origin: 50% 50%; animation: spin2 8s linear infinite; transform-box: fill-box; }
 `;
 
-function NexaLogoAnimated({ size = 48 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 64 64" style={{ overflow: "visible" }}>
-      <defs>
-        <linearGradient id="na-g1" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#0ea5e9" />
-          <stop offset="100%" stopColor="#10b981" />
-        </linearGradient>
-        <filter id="na-glow">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
-      </defs>
-      {/* Outer ring */}
-      <g className="nexa-ring1">
-        <circle cx="32" cy="32" r="29" fill="none" stroke="url(#na-g1)" strokeWidth="1.2" strokeOpacity="0.4" strokeDasharray="6 5" />
-      </g>
-      {/* Inner ring */}
-      <g className="nexa-ring2">
-        <circle cx="32" cy="32" r="22" fill="none" stroke="#0ea5e9" strokeWidth="1" strokeOpacity="0.5" strokeDasharray="3 4" />
-      </g>
-      {/* Core */}
-      <rect x="10" y="10" width="44" height="44" rx="12" fill="url(#na-g1)" filter="url(#na-glow)" />
-      <text x="32" y="43" textAnchor="middle" fontFamily="monospace" fontSize="22" fontWeight="bold" fill="#fff">N</text>
-    </svg>
-  );
-}
 
 function Markdown({ text }) {
   const lines = text.split("\n");
@@ -179,7 +149,7 @@ export default function NexaAI() {
           borderBottom: `1px solid ${C.border}`,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <NexaAvatar size={38} />
+            <NexaIsotipo size={38} />
             <div>
               <div style={{ fontSize: 17, fontWeight: 800, letterSpacing: "-0.5px", color: C.sky }}>NEXA AI</div>
               <div style={{ fontSize: 10, color: C.muted, letterSpacing: "0.06em" }}>NEXT-GEN ENTERPRISE EXECUTIVE ASSISTANT</div>

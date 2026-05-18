@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NexaAvatar from "./NexaAvatar.jsx";
+import { NexaWordmark } from "./NexaBrand.jsx";
 
 const LANDING_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -294,9 +295,8 @@ export default function LandingPage() {
 
       {/* NAV */}
       <nav style={S.nav} className="lp-nav-inner">
-        <a href="/" style={S.logo}>
-          <NexaLogoSVG size={30} />
-          NEXA
+        <a href="/" style={{ textDecoration: "none" }}>
+          <NexaWordmark size={30} animate={false} />
         </a>
         <ul style={S.navLinks} className="lp-nav-links">
           {["Funciones", "Cómo funciona", "Precios"].map(l => (
@@ -503,8 +503,8 @@ export default function LandingPage() {
 
       {/* FOOTER */}
       <footer style={S.footer} className="lp-footer">
-        <a href="/" style={{ ...S.logo, fontSize: 16 }}>
-          <NexaLogoSVG size={22} /> NEXA
+        <a href="/" style={{ textDecoration: "none" }}>
+          <NexaWordmark size={22} animate={false} />
         </a>
         <p style={{ margin: 0, fontSize: 12, color: "#475569" }}>
           © 2026 Neexo Solutions. Todos los derechos reservados.
@@ -522,17 +522,3 @@ export default function LandingPage() {
   );
 }
 
-function NexaLogoSVG({ size = 32 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 32 32" style={{ flexShrink: 0 }}>
-      <rect width="32" height="32" rx="7" fill="url(#ng)" />
-      <defs>
-        <linearGradient id="ng" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#0ea5e9" />
-          <stop offset="100%" stopColor="#10b981" />
-        </linearGradient>
-      </defs>
-      <text x="16" y="22" textAnchor="middle" fontFamily="monospace" fontSize="16" fontWeight="bold" fill="#fff">N</text>
-    </svg>
-  );
-}

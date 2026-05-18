@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { DEMO_DATA } from "./dashboardData.js";
+import { NexaIsotipo } from "./NexaBrand.jsx";
 
 const C = {
   sky: "#0ea5e9",
@@ -374,7 +375,7 @@ Equipo: velocidad ${metrics.team.velocity}%, standup ${metrics.team.standupDone 
           borderBottom: `1px solid ${C.border}`, position: "sticky", top: 0, zIndex: 10,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <NexaLogo size={28} />
+            <NexaIsotipo size={28} />
             <div>
               <div style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, letterSpacing: "-0.5px", color: C.sky }}>NEXA</div>
               {!isMobile && <div style={{ fontSize: 10, color: C.muted, letterSpacing: "0.05em" }}>COMMAND CENTER</div>}
@@ -570,17 +571,3 @@ Equipo: velocidad ${metrics.team.velocity}%, standup ${metrics.team.standupDone 
   );
 }
 
-function NexaLogo({ size = 32 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 32 32">
-      <defs>
-        <linearGradient id="nlg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#0ea5e9" />
-          <stop offset="100%" stopColor="#10b981" />
-        </linearGradient>
-      </defs>
-      <rect width="32" height="32" rx="7" fill="url(#nlg)" />
-      <text x="16" y="22" textAnchor="middle" fontFamily="monospace" fontSize="16" fontWeight="bold" fill="#fff">N</text>
-    </svg>
-  );
-}
