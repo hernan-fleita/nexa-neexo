@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import NexaAvatar from "./NexaAvatar.jsx";
 
 const LANDING_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -330,7 +331,27 @@ export default function LandingPage() {
 
       {/* HERO */}
       <section style={S.hero} className="lp-hero">
-        <div style={{ maxWidth: 860, padding: "0 24px" }}>
+        <div style={{ maxWidth: 960, padding: "0 24px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+
+          {/* Avatar */}
+          <NexaAvatar size={148} style={{ marginBottom: 8 }} />
+
+          {/* Acronym tag */}
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 24, flexWrap: "wrap", justifyContent: "center" }}>
+            {[
+              { letter: "N", word: "Next-gen" },
+              { letter: "E", word: "Enterprise" },
+              { letter: "X", word: "eXecutive" },
+              { letter: "A", word: "Assistant" },
+            ].map(({ letter, word }) => (
+              <span key={letter} style={{ display: "inline-flex", alignItems: "center", gap: 5,
+                background: "rgba(14,165,233,0.07)", border: "1px solid rgba(14,165,233,0.18)",
+                borderRadius: 8, padding: "4px 10px", fontSize: 12, color: "#94a3b8" }}>
+                <strong style={{ color: "#0ea5e9", fontWeight: 800 }}>{letter}</strong>{word.slice(1)}
+              </span>
+            ))}
+          </div>
+
           <div style={S.heroEyebrow}>
             <span>✦</span> Plataforma de IA para negocios
           </div>
@@ -339,8 +360,8 @@ export default function LandingPage() {
             <span style={S.heroGrad}>inteligente y unificado</span>
           </h1>
           <p style={S.heroSub}>
-            NEXA centraliza revenue, operaciones, marketing y equipo en un solo lugar.
-            Con IA integrada que entiende tu contexto y te ayuda a decidir más rápido.
+            NEXA es tu asistente ejecutiva de próxima generación — centraliza revenue,
+            operaciones, marketing y equipo con IA que entiende el contexto de tu empresa.
           </p>
           <div style={S.heroCTA}>
             <button

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import NexaAvatar from "./NexaAvatar.jsx";
 
 const SYSTEM = `Sos NEXA, la IA de negocios de Neexo Solutions.
 Tu especialidad: ayudar a fundadores, CEOs y equipos a tomar mejores decisiones de negocio.
@@ -177,11 +178,11 @@ export default function NexaAI() {
           background: "rgba(5,15,26,0.95)", backdropFilter: "blur(12px)",
           borderBottom: `1px solid ${C.border}`,
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <NexaLogoAnimated size={36} />
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <NexaAvatar size={38} />
             <div>
               <div style={{ fontSize: 17, fontWeight: 800, letterSpacing: "-0.5px", color: C.sky }}>NEXA AI</div>
-              <div style={{ fontSize: 10, color: C.muted, letterSpacing: "0.06em" }}>BUSINESS INTELLIGENCE</div>
+              <div style={{ fontSize: 10, color: C.muted, letterSpacing: "0.06em" }}>NEXT-GEN ENTERPRISE EXECUTIVE ASSISTANT</div>
             </div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -204,12 +205,15 @@ export default function NexaAI() {
         <div style={{ flex: 1, overflowY: "auto", padding: "28px", display: "flex", flexDirection: "column" }}>
           {showWelcome ? (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", animation: "fadeUp .5s" }}>
-              <NexaLogoAnimated size={80} />
-              <h1 style={{ fontSize: 28, fontWeight: 800, marginTop: 24, marginBottom: 12, letterSpacing: "-1px" }}>
+              <NexaAvatar size={120} />
+              <h1 style={{ fontSize: 28, fontWeight: 800, marginTop: 16, marginBottom: 6, letterSpacing: "-1px" }}>
                 Hola, soy <span style={{ color: C.sky }}>NEXA</span>
               </h1>
-              <p style={{ fontSize: 16, color: C.sub, maxWidth: 440, lineHeight: 1.6, marginBottom: 40 }}>
-                Tu IA de negocios. Preguntame sobre revenue, operaciones, marketing, equipo o cualquier decisión de tu empresa.
+              <p style={{ fontSize: 12, color: C.muted, letterSpacing: "0.06em", marginBottom: 14 }}>
+                NEXT-GEN · ENTERPRISE · EXECUTIVE · ASSISTANT
+              </p>
+              <p style={{ fontSize: 15, color: C.sub, maxWidth: 420, lineHeight: 1.65, marginBottom: 36 }}>
+                Tu asistente ejecutiva de IA. Preguntame sobre revenue, operaciones, marketing, equipo o cualquier decisión de tu empresa.
               </p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 10, maxWidth: 720, width: "100%" }}>
                 {SUGGESTED.map((s, i) => (
@@ -232,17 +236,17 @@ export default function NexaAI() {
                   display: "flex", gap: 14, flexDirection: m.role === "user" ? "row-reverse" : "row",
                   alignItems: "flex-start",
                 }}>
-                  <div style={{
-                    width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: m.role === "user"
-                      ? "linear-gradient(135deg, #334155, #1e293b)"
-                      : "linear-gradient(135deg, #0ea5e9, #10b981)",
-                    fontSize: 14, fontWeight: 800,
-                    border: `1px solid ${m.role === "user" ? "rgba(148,163,184,0.15)" : "rgba(14,165,233,0.4)"}`,
-                  }}>
-                    {m.role === "user" ? "U" : "N"}
-                  </div>
+                  {m.role === "user" ? (
+                    <div style={{
+                      width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      background: "linear-gradient(135deg, #334155, #1e293b)",
+                      fontSize: 14, fontWeight: 800,
+                      border: "1px solid rgba(148,163,184,0.15)",
+                    }}>U</div>
+                  ) : (
+                    <NexaAvatar size={36} animate={false} style={{ flexShrink: 0 }} />
+                  )}
                   <div style={{
                     maxWidth: "82%",
                     background: m.role === "user"
@@ -261,12 +265,7 @@ export default function NexaAI() {
 
               {loading && (
                 <div className="msg-enter" style={{ display: "flex", gap: 14 }}>
-                  <div style={{
-                    width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "linear-gradient(135deg, #0ea5e9, #10b981)", fontSize: 14, fontWeight: 800,
-                    border: "1px solid rgba(14,165,233,0.4)",
-                  }}>N</div>
+                  <NexaAvatar size={36} animate={true} style={{ flexShrink: 0 }} />
                   <div style={{
                     background: "rgba(15,23,42,0.9)", border: "1px solid rgba(14,165,233,0.15)",
                     borderRadius: "4px 16px 16px 16px", padding: "14px 18px",
@@ -284,12 +283,7 @@ export default function NexaAI() {
 
               {typing && (
                 <div className="msg-enter" style={{ display: "flex", gap: 14 }}>
-                  <div style={{
-                    width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "linear-gradient(135deg, #0ea5e9, #10b981)", fontSize: 14, fontWeight: 800,
-                    border: "1px solid rgba(14,165,233,0.4)",
-                  }}>N</div>
+                  <NexaAvatar size={36} animate={true} style={{ flexShrink: 0 }} />
                   <div style={{
                     maxWidth: "82%", background: "rgba(15,23,42,0.9)",
                     border: "1px solid rgba(14,165,233,0.15)",
