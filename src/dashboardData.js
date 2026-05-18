@@ -9,8 +9,8 @@ export const DEMO_DATA = {
     alert:    "1 factura vencida",
     overdueList: [{
       id: "#0039", client: "Demo Corp S.A.", amount: 95000, currency: "ARS",
-      issued: "18/04/2025", due: "03/05/2025", daysOverdue: 15,
-      contact: "admin@democorp.com", description: "Servicios de desarrollo — Mayo 2025",
+      issued: "18/04/2026", due: "03/05/2026", daysOverdue: 15,
+      contact: "admin@democorp.com", description: "Servicios de desarrollo — Mayo 2026",
     }],
   },
   ops: {
@@ -20,7 +20,7 @@ export const DEMO_DATA = {
     alert:   "1 bloqueante crítico",
     blockerList: [{
       id: "#87", title: "Auth timeout en producción", severity: "CRÍTICO",
-      created: "Ayer, 22:14", url: "https://github.com",
+      created: "17/05/2026, 22:14", url: "https://github.com",
     }],
   },
   marketing: {
