@@ -1,6 +1,42 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const LANDING_CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; }
+
+  .lp-nav-links { display: flex; gap: 32px; list-style: none; }
+  .lp-nav-btns  { display: flex; gap: 12px; }
+  .lp-hamburger { display: none; background: transparent; border: 1px solid rgba(14,165,233,0.25); border-radius: 8px; padding: 6px 10px; color: #94a3b8; cursor: pointer; font-size: 20px; line-height: 1; }
+  .lp-mobile-menu { display: none; }
+  .lp-mobile-menu.open {
+    display: flex; flex-direction: column;
+    position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
+    background: rgba(5,15,26,0.98); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(14,165,233,0.15);
+    padding: 8px 20px 24px;
+  }
+  .lp-mobile-menu a { color: #94a3b8; text-decoration: none; font-size: 16px; font-weight: 500; padding: 14px 0; display: block; border-bottom: 1px solid rgba(148,163,184,0.08); }
+  .lp-mobile-menu-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+  .lp-how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+
+  @media (max-width: 768px) {
+    .lp-nav-inner  { padding: 0 20px !important; }
+    .lp-nav-links  { display: none; }
+    .lp-nav-btns   { display: none; }
+    .lp-hamburger  { display: flex; align-items: center; justify-content: center; }
+    .lp-section    { padding: 60px 20px !important; }
+    .lp-hero       { padding-top: 100px !important; padding-bottom: 60px !important; }
+    .lp-how-grid   { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .lp-cta        { padding: 60px 20px !important; }
+    .lp-footer     { padding: 24px 20px !important; flex-direction: column !important; align-items: flex-start !important; }
+    .lp-stats      { gap: 20px !important; }
+    .lp-footer-links { gap: 16px !important; }
+  }
+`;
+
 const S = {
   page: {
     fontFamily: "'Inter', system-ui, sans-serif",
@@ -249,16 +285,19 @@ const PLANS = [
 export default function LandingPage() {
   const navigate = useNavigate();
   const [hoverBtn, setHoverBtn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div style={S.page}>
+      <style>{LANDING_CSS}</style>
+
       {/* NAV */}
-      <nav style={S.nav}>
+      <nav style={S.nav} className="lp-nav-inner">
         <a href="/" style={S.logo}>
           <NexaLogoSVG size={30} />
           NEXA
         </a>
-        <ul style={S.navLinks}>
+        <ul style={S.navLinks} className="lp-nav-links">
           {["Funciones", "Cómo funciona", "Precios"].map(l => (
             <li key={l}>
               <a href={`#${l.toLowerCase().replace(" ", "-")}`}
@@ -269,14 +308,28 @@ export default function LandingPage() {
             </li>
           ))}
         </ul>
-        <div style={{ display: "flex", gap: 12 }}>
+        <div style={{ display: "flex", gap: 12 }} className="lp-nav-btns">
           <button style={S.btnOutline} onClick={() => navigate("/dashboard")}>Ver Demo</button>
           <button style={S.btnPrimary} onClick={() => navigate("/nexa")}>Hablar con NEXA</button>
         </div>
+        <button className="lp-hamburger" onClick={() => setMenuOpen(o => !o)} aria-label="Menú">
+          {menuOpen ? "✕" : "☰"}
+        </button>
       </nav>
 
+      {/* MOBILE MENU */}
+      <div className={`lp-mobile-menu${menuOpen ? " open" : ""}`}>
+        {["Funciones", "Cómo funciona", "Precios"].map(l => (
+          <a key={l} href={`#${l.toLowerCase().replace(" ", "-")}`} onClick={() => setMenuOpen(false)}>{l}</a>
+        ))}
+        <div className="lp-mobile-menu-btns">
+          <button style={{ ...S.btnOutline, padding: "12px 0" }} onClick={() => { navigate("/dashboard"); setMenuOpen(false); }}>Ver Demo</button>
+          <button style={{ ...S.btnPrimary, padding: "12px 0" }} onClick={() => { navigate("/nexa"); setMenuOpen(false); }}>Hablar con NEXA</button>
+        </div>
+      </div>
+
       {/* HERO */}
-      <section style={S.hero}>
+      <section style={S.hero} className="lp-hero">
         <div style={{ maxWidth: 860, padding: "0 24px" }}>
           <div style={S.heroEyebrow}>
             <span>✦</span> Plataforma de IA para negocios
@@ -308,7 +361,7 @@ export default function LandingPage() {
         </div>
 
         {/* Stats */}
-        <div style={{ ...S.stats, maxWidth: 860, width: "100%", padding: "32px 24px" }}>
+        <div style={{ ...S.stats, maxWidth: 860, width: "100%", padding: "32px 24px" }} className="lp-stats">
           {[
             { n: "97%", l: "Satisfacción de clientes" },
             { n: "<2 min", l: "Setup inicial" },
@@ -324,7 +377,7 @@ export default function LandingPage() {
       </section>
 
       {/* FEATURES */}
-      <section id="funciones" style={S.section}>
+      <section id="funciones" style={S.section} className="lp-section">
         <p style={S.sectionLabel}>Funcionalidades</p>
         <h2 style={S.sectionTitle}>Todo lo que necesitás<br />para gestionar tu negocio</h2>
         <p style={S.sectionSub}>Un panel unificado con datos en tiempo real y una IA que entiende el contexto de tu empresa.</p>
@@ -343,8 +396,8 @@ export default function LandingPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="cómo-funciona" style={{ ...S.section, background: "rgba(14,165,233,0.02)", borderRadius: 24 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "start" }}>
+      <section id="cómo-funciona" style={{ ...S.section, background: "rgba(14,165,233,0.02)", borderRadius: 24 }} className="lp-section">
+        <div className="lp-how-grid">
           <div>
             <p style={S.sectionLabel}>Cómo funciona</p>
             <h2 style={S.sectionTitle}>De los datos al insight<br />en minutos</h2>
@@ -371,7 +424,7 @@ export default function LandingPage() {
       </section>
 
       {/* PRICING */}
-      <section id="precios" style={S.section}>
+      <section id="precios" style={S.section} className="lp-section">
         <p style={S.sectionLabel}>Precios</p>
         <h2 style={S.sectionTitle}>Simple, transparente</h2>
         <p style={S.sectionSub}>Empezá gratis y escalá cuando lo necesités. Sin sorpresas.</p>
@@ -410,7 +463,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section style={S.cta}>
+      <section style={S.cta} className="lp-cta">
         <h2 style={{ ...S.sectionTitle, marginBottom: 16 }}>¿Listo para tomar el control<br />de tu negocio?</h2>
         <p style={{ ...S.sectionSub, margin: "0 auto 40px" }}>
           Empezá hoy con el plan gratuito. Sin tarjeta de crédito.
@@ -428,14 +481,14 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <footer style={S.footer}>
+      <footer style={S.footer} className="lp-footer">
         <a href="/" style={{ ...S.logo, fontSize: 16 }}>
           <NexaLogoSVG size={22} /> NEXA
         </a>
         <p style={{ margin: 0, fontSize: 12, color: "#475569" }}>
           © 2025 Neexo Solutions. Todos los derechos reservados.
         </p>
-        <div style={S.footerLinks}>
+        <div style={S.footerLinks} className="lp-footer-links">
           {["Privacidad", "Términos", "Contacto"].map(l => (
             <a key={l} href="#" style={S.footerLink}
               onMouseEnter={e => e.target.style.color = "#94a3b8"}
