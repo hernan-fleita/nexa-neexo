@@ -19,8 +19,9 @@ export const DEMO_DATA = {
     blockers: 1,
     alert:   "1 bloqueante crítico",
     blockerList: [{
-      id: "#87", title: "Auth timeout en producción", severity: "CRÍTICO",
-      created: "17/05/2026, 22:14", url: "https://github.com",
+      id: "#87", title: "Auth timeout — Integración HubSpot CRM", severity: "CRÍTICO",
+      created: "17/05/2026, 22:14",
+      url: "/incident?id=87&service=HubSpot+CRM&error=AUTH_TIMEOUT_503&severity=CR%C3%8DTICO&created=17%2F05%2F2026%2C+22%3A14&affected=Leads%2CContactos%2CSincronizaci%C3%B3n",
     }],
   },
   marketing: {

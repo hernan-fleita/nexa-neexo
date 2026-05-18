@@ -199,10 +199,10 @@ function DetailPanel({ type, data, onClose }) {
               <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>{bl.title}</div>
               <div style={{ fontSize: 12, color: C.muted }}>Creado: {bl.created}</div>
               {bl.url && (
-                <a href={bl.url} target="_blank" rel="noreferrer" style={{
+                <a href={bl.url} style={{
                   display: "inline-block", marginTop: 12,
                   fontSize: 12, color: C.sky, textDecoration: "none",
-                }}>Ver en GitHub →</a>
+                }}>Ver detalle del incidente →</a>
               )}
             </div>
           ))}
