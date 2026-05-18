@@ -486,7 +486,7 @@ export default function LandingPage() {
           <NexaLogoSVG size={22} /> NEXA
         </a>
         <p style={{ margin: 0, fontSize: 12, color: "#475569" }}>
-          © 2025 Neexo Solutions. Todos los derechos reservados.
+          © 2026 Neexo Solutions. Todos los derechos reservados.
         </p>
         <div style={S.footerLinks} className="lp-footer-links">
           {["Privacidad", "Términos", "Contacto"].map(l => (
