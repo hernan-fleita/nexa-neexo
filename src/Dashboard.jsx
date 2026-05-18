@@ -19,6 +19,7 @@ const C = {
 const GLOBAL_STYLE = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; }
   body { font-family: 'Inter', system-ui, sans-serif; background: ${C.bg}; color: ${C.text}; }
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -315,8 +316,19 @@ Respondé de forma concisa y útil en español.`;
   );
 }
 
+function useBreakpoint() {
+  const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1280);
+  useEffect(() => {
+    const h = () => setW(window.innerWidth);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+  return { isMobile: w < 640, isTablet: w < 1024 };
+}
+
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { isMobile, isTablet } = useBreakpoint();
   const [metrics, setMetrics] = useState(DEMO_DATA);
   const [brief, setBrief] = useState("");
   const [briefLoading, setBriefLoading] = useState(true);
@@ -351,48 +363,52 @@ Equipo: velocidad ${metrics.team.velocity}%, standup ${metrics.team.standupDone 
   return (
     <>
       <style>{GLOBAL_STYLE}</style>
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", overflowX: "hidden" }}>
         {/* Header */}
         <header style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "0 32px", height: 60,
+          flexWrap: "wrap", gap: isMobile ? 8 : 0,
+          padding: isMobile ? "10px 16px" : "0 32px",
+          minHeight: 60,
           background: "rgba(5,15,26,0.95)", backdropFilter: "blur(12px)",
           borderBottom: `1px solid ${C.border}`, position: "sticky", top: 0, zIndex: 10,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <NexaLogo size={32} />
+            <NexaLogo size={28} />
             <div>
-              <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: "-0.5px", color: C.sky }}>NEXA</div>
-              <div style={{ fontSize: 10, color: C.muted, letterSpacing: "0.05em" }}>COMMAND CENTER</div>
+              <div style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, letterSpacing: "-0.5px", color: C.sky }}>NEXA</div>
+              {!isMobile && <div style={{ fontSize: 10, color: C.muted, letterSpacing: "0.05em" }}>COMMAND CENTER</div>}
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 13, fontWeight: 600 }}>{metrics.tenant}</div>
-              <Badge color={C.emerald}>{metrics.plan}</Badge>
-            </div>
+          <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 20 }}>
+            {!isMobile && (
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>{metrics.tenant}</div>
+                <Badge color={C.emerald}>{metrics.plan}</Badge>
+              </div>
+            )}
             <div style={{ display: "flex", gap: 8 }}>
               <button
                 onClick={() => navigate("/")}
-                style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 8, padding: "6px 14px", color: C.sub, fontSize: 12, cursor: "pointer" }}
+                style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 8, padding: "6px 12px", color: C.sub, fontSize: 12, cursor: "pointer" }}
                 onMouseEnter={e => e.currentTarget.style.borderColor = C.borderHover}
                 onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
               >← Inicio</button>
               <button
                 onClick={() => navigate("/nexa")}
-                style={{ background: "linear-gradient(135deg, #0ea5e9, #0284c7)", border: "none", borderRadius: 8, padding: "6px 14px", color: "#fff", fontSize: 12, cursor: "pointer", fontWeight: 600 }}
+                style={{ background: "linear-gradient(135deg, #0ea5e9, #0284c7)", border: "none", borderRadius: 8, padding: "6px 12px", color: "#fff", fontSize: 12, cursor: "pointer", fontWeight: 600 }}
               >NEXA AI →</button>
             </div>
           </div>
         </header>
 
-        <main style={{ flex: 1, padding: "28px 32px", maxWidth: 1280, margin: "0 auto", width: "100%" }}>
+        <main style={{ flex: 1, padding: isMobile ? "16px" : isTablet ? "20px 24px" : "28px 32px", maxWidth: 1280, margin: "0 auto", width: "100%" }}>
           {/* Brief */}
           <div style={{
             background: "linear-gradient(135deg, rgba(14,165,233,0.08), rgba(16,185,129,0.05))",
             border: `1px solid rgba(14,165,233,0.18)`,
-            borderRadius: 14, padding: "16px 20px", marginBottom: 24,
-            display: "flex", alignItems: "flex-start", gap: 16,
+            borderRadius: 14, padding: isMobile ? "14px 16px" : "16px 20px", marginBottom: isMobile ? 16 : 24,
+            display: "flex", alignItems: "flex-start", gap: isMobile ? 10 : 16,
           }}>
             <div style={{ fontSize: 22 }}>🤖</div>
             <div style={{ flex: 1 }}>
@@ -410,7 +426,7 @@ Equipo: velocidad ${metrics.team.velocity}%, standup ${metrics.team.standupDone 
           </div>
 
           {/* Metrics Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20, marginBottom: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(260px, 1fr))", gap: isMobile ? 12 : 20, marginBottom: isMobile ? 16 : 24 }}>
             <MetricCard
               title="Revenue Mensual" icon="💰"
               value={fmt(metrics.revenue.monthly)}
@@ -467,7 +483,7 @@ Equipo: velocidad ${metrics.team.velocity}%, standup ${metrics.team.standupDone 
           </div>
 
           {/* Bottom: Activity + Mini Chat */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.3fr", gap: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "1fr 1.3fr", gap: isMobile ? 12 : 20 }}>
             {/* Activity / Chat Panel */}
             <div style={{
               background: C.surface, border: `1px solid ${C.border}`,
